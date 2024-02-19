@@ -1,0 +1,46 @@
+name: Chained Jobs Example
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build
+      run: |
+        echo "hello world"
+
+  test:
+    runs-on: ubuntu-latest
+
+    needs: build  # Specifies that this job depends on the 'build' job
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Run tests
+      run: |
+        # Your test commands here
+        echo "Running tests..."
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    needs: test  # Specifies that this job depends on the 'test' job
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Deploy
+      run: |
+        # Your deployment commands here
+        echo "Deploying the application..."
